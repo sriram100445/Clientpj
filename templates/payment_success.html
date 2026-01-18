@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-3xl mx-auto mt-10 bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
+
+    <!-- WATERMARK LOGO -->
+    <img src="{{ url_for('static', filename='uploads/icon.png') }}"
+         class="absolute inset-0 m-auto w-72 opacity-5 pointer-events-none"
+         alt="Glamozz Watermark">
+
+    <!-- HEADER -->
+    <div class="text-center mb-6 relative">
+        <h2 class="text-2xl font-bold" style="color:#e32f86;font-family:Poppins;">Glamozz Boutique</h2>
+        <p class="text-sm text-gray-500">Order Invoice</p>
+    </div>
+
+    <!-- SHOP + CUSTOMER DETAILS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm mb-6 relative">
+
+        <!-- SHOP DETAILS -->
+        <div>
+            <h4 class="font-semibold text-gray-700 mb-1">Seller</h4>
+            <p>Glamozz Boutique</p>
+            <p>C73, Thillai Nagar, 10 th Cross West</p>
+            <p>Trichy – 620018</p>
+            <p>Phone: +91 80568 53535 , +91 94421 70492</p>
+        </div>
+
+        <!-- CUSTOMER DETAILS -->
+        <div class="md:text-right">
+            <h4 class="font-semibold text-gray-700 mb-1">Bill To</h4>
+            <p>{{ order.customer_name }}</p>
+            <p>{{ order.customer_phone }}</p>
+            <p>{{ order.address }}</p>
+            <p class="text-xs text-gray-400 mt-1">
+                Order ID: #{{ order.id }}
+            </p>
+        </div>
+    </div>
+
+    <!-- ITEM TABLE -->
+    <div class="relative">
+        <table class="w-full text-sm border-t border-gray-200">
+            <thead>
+                <tr class="text-left text-gray-600">
+                    <th class="py-2">Item</th>
+                    <th class="py-2 text-center">Qty</th>
+                    <th class="py-2 text-right">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr class="border-t">
+                    <td class="py-2">{{ item.product.name }}</td>
+                    <td class="py-2 text-center">{{ item.quantity }}</td>
+                    <td class="py-2 text-right">₹{{ "%.2f"|format(item.subtotal) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="mt-4 text-sm relative">
+        <div class="flex justify-between py-1">
+            <span>Subtotal</span>
+            <span>₹{{ "%.2f"|format(subtotal) }}</span>
+        </div>
+        <div class="flex justify-between py-1">
+            <span>Shipping</span>
+            <span>₹{{ "%.2f"|format(shipping) }}</span>
+        </div>
+        <div class="flex justify-between py-2 font-semibold text-base border-t mt-2">
+            <span>Total</span>
+            <span>₹{{ "%.2f"|format(total) }}</span>
+        </div>
+    </div>
+
+    <!-- NOTE -->
+    <p class="text-xs text-gray-500 mt-4 text-center relative">
+        Please pay the exact amount shown above and share the payment screenshot.
+        Orders will be confirmed after verification.
+    </p>
+
+    
+
+</div>
+<!-- DOWNLOAD BUTTON -->
+    <div class="mt-6 text-center relative">
+        <button onclick="window.print()"
+                class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full">
+            Download Invoice
+        </button>
+    </div>
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .max-w-3xl, .max-w-3xl * {
+        visibility: visible;
+    }
+    .max-w-3xl {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
+<script>
+function downloadInvoice() {
+    window.print();
+}
+</script>
+
+
+<div class="bg-white p-6 rounded-xl shadow text-center max-w-md mx-auto">
+    <h1 class="text-2xl font-bold text-green-600 mb-3">
+        Payment Successful 🎉
+    </h1>
+
+    <p class="mb-1">Order ID: <b>#{{ order.id }}</b></p>
+    <p class="mb-3">Total Amount: ₹{{ order.total_amount }}</p>
+
+    <p class="text-sm text-gray-600 mb-4">
+        Please send payment screenshot to confirm shipping
+    </p>
+
+    <a href="{{ whatsapp_url }}"
+   target="_blank"
+   class="bg-green-600 text-white px-4 py-2 rounded">
+   Send Details on WhatsApp
+</a>
+
+
+    <div class="mt-4">
+        <a href="{{ url_for('index') }}"
+           class="text-sm text-pink-600 hover:underline">
+            Continue Shopping →
+        </a>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<footer class="bg-white border-t mt-12">
+
+    <!-- TOP FOOTER CONTENT -->
+    <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
+
+        <!-- BRAND / ABOUT -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Glamozz Boutique
+            </h3>
+            <p class="text-gray-500 mb-3">
+                Premium abayas & modest fashion for everyday elegance.
+            </p>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/glamozz_abaya?igsh=Y205bXdqdnI1Y3p0"
+               target="_blank"
+               class="inline-flex items-center gap-2 text-[var(--brand-pink)] font-medium hover:underline">
+                📸 @glamozz_boutique
+            </a>
+        </div>
+
+        <!-- CONTACT DETAILS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Contact Us
+            </h3>
+
+            <p class="mb-2">
+                📞 <a href="tel:+919876543210"
+                      class="hover:underline">
+                    +91 98765 43210
+                </a>
+            </p>
+
+            <p class="mb-2">
+                📍 No.12, Anna Nagar,<br>
+                Chennai – 600040
+            </p>
+
+            <a href="https://maps.google.com/?q=Anna+Nagar+Chennai"
+               target="_blank"
+               class="text-[var(--brand-pink)] hover:underline">
+                View on Google Maps
+            </a>
+        </div>
+
+        <!-- BUSINESS HOURS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Business Timings
+            </h3>
+
+            <p>🕒 Mon – Sat: 10:00 AM – 9:00 PM</p>
+            <p>🕒 Sunday: 11:00 AM – 7:00 PM</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="border-t">
+        <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+            <span>© 2025 Glamozz. All Rights Reserved.</span>
+            <span>Made with ♥ for modest fashion.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/919876543210?text=Hello%20Glamozz%20Boutique,%20I%20have%20a%20query"
+   target="_blank"
+   class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 text-2xl">
+    💬
+</a>
+
+<!-- BRAND COLORS -->
+<style>
+:root{
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+    --brand-deep:#4b1248;
+    --brand-bg:#fff8fb;
+}
+</style>
+
+
+</body>
+</html>

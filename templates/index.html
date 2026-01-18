@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Hero section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 items-center">
+    <div>
+        <p class="uppercase tracking-[0.25em] text-xs text-pink-500 mb-2">New • Premium • Modest</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 leading-tight mb-4" style="font-family:'Playfair Display',serif;">
+            Premium Burkhas & Hijabs<br>
+            for everyday elegance.
+        </h1>
+        <p class="text-sm sm:text-base text-gray-600 mb-6">
+            Discover carefully curated abayas, jilbabs, niqabs and hijabs in
+            rich fabrics, premium finishes and shades crafted for the modern,
+            modest woman.
+        </p>
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ url_for('category_page', slug='abaya') }}"
+               class="pill-badge bg-pink-600 text-white px-5 py-2 text-sm font-medium hover:bg-pink-700">
+                Shop Burkhas
+            </a>
+            <a href="{{ url_for('cart') }}"
+               class="pill-badge border border-pink-300 text-pink-700 px-5 py-2 text-sm font-medium bg-pink-50 hover:bg-pink-100">
+                View Cart ({{ cart_count }})
+            </a>
+        </div>
+        <div class="flex items-center gap-3 mt-5 text-xs text-gray-500">
+            <span class="pill-badge bg-pink-50 px-3 py-1">Cash on Delivery*</span>
+            <span class="pill-badge bg-pink-50 px-3 py-1">Easy returns</span>
+            <span class="pill-badge bg-pink-50 px-3 py-1">Premium fabric only</span>
+        </div>
+    </div>
+
+    <div class="relative">
+        <div class="absolute -inset-4 bg-pink-100 rounded-3xl opacity-70 blur-xl"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl p-4 flex flex-col gap-3">
+            <div class="rounded-2xl bg-gradient-to-br from-pink-600 via-rose-500 to-purple-700 h-40 sm:h-52 flex items-end p-4 text-white">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.25em] mb-1">Clearance sale</p>
+                    <p class="text-2xl font-semibold">Up to 50% Off</p>
+                    <p class="text-xs text-pink-100 mt-1">Selected premium pieces only</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 text-xs">
+                <div class="bg-pink-50 rounded-2xl p-3">
+                    <p class="font-semibold text-gray-800 mb-1">Everyday Abayas</p>
+                    <p class="text-[11px] text-gray-500">Soft, breathable fabrics for daily wear.</p>
+                </div>
+                <div class="bg-pink-50 rounded-2xl p-3">
+                    <p class="font-semibold text-gray-800 mb-1">Party Wear</p>
+                    <p class="text-[11px] text-gray-500">Satin, organza and stone work hijabs.</p>
+                </div>
+                <div class="bg-pink-50 rounded-2xl p-3">
+                    <p class="font-semibold text-gray-800 mb-1">Niqabs & Caps</p>
+                    <p class="text-[11px] text-gray-500">Perfect coverage with comfort.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shop by collection -->
+<section class="mb-10">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
+            Shop by collection
+        </h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {% for cat in categories_list %}
+            <a href="{{ url_for('category_page', slug=cat.slug) }}"
+               class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+                <div class="h-28 bg-gradient-to-br from-pink-500 via-rose-150 to-purple-450 group-hover:from-pink-200 group-hover:via-rose-100 group-hover:to-purple-500 flex items-center justify-center">
+                    <span class="text-sm font-bold text-gray-800 text-center px-2">
+                        {{ cat.name }}
+                    </span>
+                </div>
+                <div class="px-3 py-2 text-[11px] text-gray-500 flex justify-between items-center">
+                    <span>Explore collection</span>
+                    <span class="text-pink-500 font-semibold">→</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Latest products -->
+<section>
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
+            New & trending
+        </h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {% for p in latest_products %}
+<div class="card flex flex-col">
+    <div class="relative">
+        <img src="{{ url_for('static', filename='uploads/' ~ p.image_filename) }}"
+             class="h-52 w-full object-cover">
+        <span class="absolute top-2 left-2 card-badge">
+            Premium
+        </span>
+    </div>
+
+    <div class="p-4 flex-1 flex flex-col">
+        <h3 class="product-title mb-1">{{ p.name }}</h3>
+        <p class="product-meta mb-1">
+            Size: {{ p.size or '-' }} • {{ p.color or '-' }}
+        </p>
+        <p class="price mb-3">₹{{ "%.0f"|format(p.price) }}</p>
+
+        <a href="{{ url_for('add_to_cart', product_id=p.id) }}"
+           class="btn-primary mt-auto text-center">
+            Add to Cart
+        </a>
+    </div>
+</div>
+{% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}
+<footer class="bg-white border-t mt-12">
+
+    <!-- TOP FOOTER CONTENT -->
+    <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
+
+        <!-- BRAND / ABOUT -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Glamozz Boutique
+            </h3>
+            <p class="text-gray-500 mb-3">
+                Premium abayas & modest fashion for everyday elegance.
+            </p>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/glamozz_abaya?igsh=Y205bXdqdnI1Y3p0"
+               target="_blank"
+               class="inline-flex items-center gap-2 text-[var(--brand-pink)] font-medium hover:underline">
+                📸 @glamozz_boutique
+            </a>
+        </div>
+
+        <!-- CONTACT DETAILS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Contact Us
+            </h3>
+
+            <p class="mb-2">
+                📞 <a href="tel:+919876543210"
+                      class="hover:underline">
+                    +91 98765 43210
+                </a>
+            </p>
+
+            <p class="mb-2">
+                📍 No.12, Anna Nagar,<br>
+                Chennai – 600040
+            </p>
+
+            <a href="https://maps.google.com/?q=Anna+Nagar+Chennai"
+               target="_blank"
+               class="text-[var(--brand-pink)] hover:underline">
+                View on Google Maps
+            </a>
+        </div>
+
+        <!-- BUSINESS HOURS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Business Timings
+            </h3>
+
+            <p>🕒 Mon – Sat: 10:00 AM – 9:00 PM</p>
+            <p>🕒 Sunday: 11:00 AM – 7:00 PM</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="border-t">
+        <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+            <span>© 2025 Glamozz. All Rights Reserved.</span>
+            <span>Made with ♥ for modest fashion.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/919876543210?text=Hello%20Glamozz%20Boutique,%20I%20have%20a%20query"
+   target="_blank"
+   class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 text-2xl">
+    💬
+</a>
+
+<!-- BRAND COLORS -->
+<style>
+:root{
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+    --brand-deep:#4b1248;
+    --brand-bg:#fff8fb;
+}
+</style>
+
+
+</body>
+</html>

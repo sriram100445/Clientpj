@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Manage Categories</h1>
+
+<!-- Add category -->
+<div class="bg-white p-4 rounded shadow mb-6 max-w-lg">
+    <form method="post" action="{{ url_for('admin_category_new') }}">
+        <label class="block text-sm font-semibold mb-1">Category Name</label>
+        <input type="text" name="name" class="w-full border px-2 py-1 mb-3" placeholder="Eg: Abaya" required>
+
+        <label class="block text-sm font-semibold mb-1">Slug (URL name)</label>
+        <input type="text" name="slug" class="w-full border px-2 py-1 mb-3" placeholder="Eg: abaya" required>
+
+        <button class="bg-pink-600 text-white px-4 py-2 rounded">
+            Add Category
+        </button>
+    </form>
+</div>
+
+<!-- Category list -->
+<div class="bg-white rounded shadow">
+    <table class="w-full text-sm">
+        <tr class="border-b">
+            <th class="p-2 text-left">ID</th>
+            <th class="p-2 text-left">Name</th>
+            <th class="p-2 text-left">Slug</th>
+            <th class="p-2"></th>
+        </tr>
+        {% for c in categories %}
+        <tr class="border-b">
+            <td class="p-2">{{ c.id }}</td>
+            <td class="p-2">{{ c.name }}</td>
+            <td class="p-2">{{ c.slug }}</td>
+            <td class="p-2 text-right">
+                <form method="post" action="{{ url_for('admin_category_delete', category_id=c.id) }}">
+                    <button onclick="return confirm('Delete this category?')" class="text-red-600">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if categories|length == 0 %}
+        <p class="p-4 text-gray-500 text-center">No categories yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

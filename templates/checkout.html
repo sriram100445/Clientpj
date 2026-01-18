@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Checkout</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- ORDER SUMMARY -->
+    <!-- INVOICE PREVIEW -->
+<div id="invoice"
+     class="relative bg-white border rounded-xl p-6 shadow-md max-w-md mx-auto">
+
+    <!-- WATERMARK LOGO -->
+    <img src="{{ url_for('static', filename='uploads/icon.png') }}"
+         class="absolute inset-0 m-auto opacity-5 w-48 pointer-events-none">
+
+    <!-- HEADER -->
+    <div class="text-center mb-4">
+        <h2 class="text-xl font-semibold">Glamozz Boutique</h2>
+        <p class="text-xs text-gray-500">Order Invoice</p>
+    </div>
+
+    <!-- ITEMS -->
+    <table class="w-full text-sm mb-3">
+        <thead class="border-b">
+            <tr class="text-gray-600">
+                <th class="text-left py-1">Item</th>
+                <th class="text-center py-1">Qty</th>
+                <th class="text-right py-1">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in items %}
+            <tr class="border-b">
+                <td class="py-1">{{ i.product.name }}</td>
+                <td class="text-center">{{ i.quantity }}</td>
+                <td class="text-right">₹{{ i.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- TOTALS -->
+    <div class="text-sm space-y-1">
+        <div class="flex justify-between">
+            <span>Subtotal</span>
+            <span>₹{{ subtotal }}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Shipping</span>
+            <span>₹{{ shipping }}</span>
+        </div>
+        <div class="flex justify-between font-semibold border-t pt-2">
+            <span>Total</span>
+            <span>₹{{ total }}</span>
+        </div>
+    </div>
+
+    <p class="text-xs text-gray-500 mt-4 text-center">
+        Please pay the exact amount and share payment screenshot
+    </p>
+    
+</div>
+
+
+
+    <!-- CUSTOMER + PAYMENT -->
+    <div class="bg-white p-5 rounded shadow">
+
+        <h2 class="font-semibold mb-3">Customer Details</h2>
+
+        <form action="{{ url_for('payment_success') }}" method="post">
+
+            <!-- CUSTOMER DETAILS -->
+            <label class="block mb-1 text-sm">Name</label>
+            <input type="text" name="name" class="w-full border px-2 py-1 mb-3" required>
+
+            <label class="block mb-1 text-sm">Email</label>
+            <input type="email" name="email" class="w-full border px-2 py-1 mb-3" required>
+
+            <label class="block mb-1 text-sm">Phone</label>
+            <input type="text" name="phone" class="w-full border px-2 py-1 mb-3" required>
+
+            <label class="block mb-1 text-sm">Address</label>
+            <textarea name="address" class="w-full border px-2 py-1 mb-4" rows="3" required></textarea>
+
+            <!-- PAYMENT SECTION -->
+            <div class="border-t pt-4 mt-4 text-center">
+
+                <h3 class="text-lg font-semibold text-pink-700 mb-3">
+        Pay Via QR / Bank Transfer
+    </h3>
+                <p class="text-sm text-gray-500 mb-3">
+                    Scan the QR and pay the exact amount
+                </p>
+
+                <p class="text-2xl font-bold text-pink-600 mb-3">
+                    ₹{{ "%.2f"|format(total) }}
+                </p>
+                <p>Subtotal: ₹{{ subtotal }}</p>
+<p>Shipping: 
+    {% if shipping == 0 %}
+        <span class="text-green-600 font-medium">FREE</span>
+    {% else %}
+        ₹{{ shipping }}
+    {% endif %}
+</p>
+<p class="font-bold text-lg">Total: ₹{{ total }}</p>
+
+
+                <!-- QR IMAGE -->
+                <img src="{{ url_for('static', filename='uploads/gpay_qr.png') }}"
+                  alt="Scan to Pay"
+                 class="w-50 h-50 mx-auto rounded-xl shadow-lg border-2 border-pink-200">
+
+                <p class="text-xs text-gray-500 mb-4">
+                    Pay Using above QR 
+                    OR
+                </p>
+                <div class="bg-pink-50 border border-pink-200 rounded-xl p-5 mt-6">
+    <h3 class="text-lg font-semibold text-pink-700 mb-3">
+        Payment Instructions
+    </h3>
+
+    <p class="text-sm text-gray-700 mb-4">
+        Please pay the <b>exact amount shown above</b>.  
+        Orders will be confirmed <b>only after verification</b>.
+    </p>
+
+    <!-- BANK DETAILS -->
+    <div class="bg-white rounded-lg border p-4 text-sm space-y-2">
+        <div class="flex justify-between">
+            <span class="font-medium text-gray-600">Account Name</span>
+            <span class="font-semibold text-gray-800">Glamozz Boutique</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="font-medium text-gray-600">Account Number</span>
+            <span class="font-semibold text-gray-800">123456789012</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="font-medium text-gray-600">IFSC Code</span>
+            <span class="font-semibold text-gray-800">HDFC0001234</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="font-medium text-gray-600">Bank Name</span>
+            <span class="font-semibold text-gray-800">HDFC Bank</span>
+        </div>
+    </div>
+
+    <p class="text-xs text-gray-600 mt-4">
+        After payment, kindly share the <b>payment screenshot</b> via WhatsApp for order confirmation.
+    </p>
+</div>
+
+                
+
+            </div>
+
+            <!-- HIDDEN AMOUNT -->
+            <input type="hidden" name="amount" value="{{ total }}">
+
+            <!-- SUBMIT -->
+            <button type="submit"
+                    class="bg-pink-600 text-white w-full py-2 rounded hover:bg-pink-700">
+                I have completed the payment
+            </button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+<footer class="bg-white border-t mt-12">
+
+    <!-- TOP FOOTER CONTENT -->
+    <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
+
+        <!-- BRAND / ABOUT -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Glamozz Boutique
+            </h3>
+            <p class="text-gray-500 mb-3">
+                Premium abayas & modest fashion for everyday elegance.
+            </p>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/glamozz_abaya?igsh=Y205bXdqdnI1Y3p0"
+               target="_blank"
+               class="inline-flex items-center gap-2 text-[var(--brand-pink)] font-medium hover:underline">
+                📸 @glamozz_boutique
+            </a>
+        </div>
+
+        <!-- CONTACT DETAILS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Contact Us
+            </h3>
+
+            <p class="mb-2">
+                📞 <a href="tel:+919876543210"
+                      class="hover:underline">
+                    +91 98765 43210
+                </a>
+            </p>
+
+            <p class="mb-2">
+                📍 No.12, Anna Nagar,<br>
+                Chennai – 600040
+            </p>
+
+            <a href="https://maps.google.com/?q=Anna+Nagar+Chennai"
+               target="_blank"
+               class="text-[var(--brand-pink)] hover:underline">
+                View on Google Maps
+            </a>
+        </div>
+
+        <!-- BUSINESS HOURS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Business Timings
+            </h3>
+
+            <p>🕒 Mon – Sat: 10:00 AM – 9:00 PM</p>
+            <p>🕒 Sunday: 11:00 AM – 7:00 PM</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="border-t">
+        <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+            <span>© 2025 Glamozz. All Rights Reserved.</span>
+            <span>Made with ♥ for modest fashion.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/919876543210?text=Hello%20Glamozz%20Boutique,%20I%20have%20a%20query"
+   target="_blank"
+   class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 text-2xl">
+    💬
+</a>
+
+<!-- BRAND COLORS -->
+<style>
+:root{
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+    --brand-deep:#4b1248;
+    --brand-bg:#fff8fb;
+}
+</style>
+
+
+</body>
+</html>

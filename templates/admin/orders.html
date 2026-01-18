@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Orders</h1>
+
+<div class="bg-white rounded shadow">
+    <table class="w-full text-sm">
+        <tr class="border-b">
+            <th class="p-2 text-left">ID</th>
+            <th class="p-2 text-left">Customer</th>
+            <th class="p-2">Total</th>
+            <th class="p-2">Status</th>
+            <th class="p-2">Date</th>
+        </tr>
+        {% for o in orders %}
+            <tr class="border-b">
+                <td class="p-2">
+                    <a href="{{ url_for('admin_order_detail', order_id=o.id) }}" class="text-blue-600">#{{ o.id }}</a>
+                </td>
+                <td class="p-2">{{ o.customer_name }}</td>
+                <td class="p-2 text-center">₹{{ "%.2f"|format(o.total_amount) }}</td>
+                <td class="p-2 text-center">{{ o.status }}</td>
+                <td class="p-2 text-center">{{ o.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+        {% endfor %}
+        {% if orders|length == 0 %}
+            <tr><td colspan="5" class="p-2 text-center text-gray-500">No orders yet.</td></tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

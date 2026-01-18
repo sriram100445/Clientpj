@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Your Cart</h1>
+
+{% if items %}
+<table class="w-full bg-white rounded shadow">
+    <tr class="border-b">
+        <th class="p-2 text-left">Product</th>
+        <th class="p-2">Qty</th>
+        <th class="p-2">Price</th>
+        <th class="p-2">Subtotal</th>
+        <th class="p-2"></th>
+    </tr>
+    {% for i in items %}
+        <tr class="border-b">
+            <td class="p-2">{{ i.product.name }}</td>
+            <td class="p-2 text-center">{{ i.quantity }}</td>
+            <td class="p-2 text-center">₹{{ "%.2f"|format(i.product.price) }}</td>
+            <td class="p-2 text-center">₹{{ "%.2f"|format(i.subtotal) }}</td>
+            <td class="p-2 text-center">
+                <a href="{{ url_for('remove_from_cart', product_id=i.product.id) }}" class="text-red-600 text-sm">
+                    Remove
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<p>Subtotal: ₹{{ "%.2f"|format(subtotal) }}</p>
+<p>Shipping: 
+    {% if shipping == 0 %}
+        <span class="text-green-600 font-medium">FREE</span>
+    {% else %}
+        ₹{{ shipping }}
+    {% endif %}
+</p>
+
+<p class="font-bold text-lg mt-2">Total Payable: ₹{{ total }}</p>
+
+<div class="flex justify-between items-center mt-4">
+    <h2 class="text-xl font-bold">Total: ₹{{ "%.2f"|format(total) }}</h2>
+    <a href="{{ url_for('checkout') }}" class="bg-green-600 text-white px-4 py-2 rounded">
+        Proceed to Checkout
+    </a>
+</div>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}
+<footer class="bg-white border-t mt-12">
+
+    <!-- TOP FOOTER CONTENT -->
+    <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
+
+        <!-- BRAND / ABOUT -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Glamozz Boutique
+            </h3>
+            <p class="text-gray-500 mb-3">
+                Premium abayas & modest fashion for everyday elegance.
+            </p>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/glamozz_abaya?igsh=Y205bXdqdnI1Y3p0"
+               target="_blank"
+               class="inline-flex items-center gap-2 text-[var(--brand-pink)] font-medium hover:underline">
+                📸 @glamozz_boutique
+            </a>
+        </div>
+
+        <!-- CONTACT DETAILS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Contact Us
+            </h3>
+
+            <p class="mb-2">
+                📞 <a href="tel:+919876543210"
+                      class="hover:underline">
+                    +91 98765 43210
+                </a>
+            </p>
+
+            <p class="mb-2">
+                📍 No.12, Anna Nagar,<br>
+                Chennai – 600040
+            </p>
+
+            <a href="https://maps.google.com/?q=Anna+Nagar+Chennai"
+               target="_blank"
+               class="text-[var(--brand-pink)] hover:underline">
+                View on Google Maps
+            </a>
+        </div>
+
+        <!-- BUSINESS HOURS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Business Timings
+            </h3>
+
+            <p>🕒 Mon – Sat: 10:00 AM – 9:00 PM</p>
+            <p>🕒 Sunday: 11:00 AM – 7:00 PM</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="border-t">
+        <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+            <span>© 2025 Glamozz. All Rights Reserved.</span>
+            <span>Made with ♥ for modest fashion.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/919876543210?text=Hello%20Glamozz%20Boutique,%20I%20have%20a%20query"
+   target="_blank"
+   class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 text-2xl">
+    💬
+</a>
+
+<!-- BRAND COLORS -->
+<style>
+:root{
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+    --brand-deep:#4b1248;
+    --brand-bg:#fff8fb;
+}
+</style>
+
+
+</body>
+</html>

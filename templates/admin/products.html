@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Products</h1>
+
+<div class="mb-4">
+    <a href="{{ url_for('admin_product_new') }}" class="bg-green-600 text-white px-4 py-2 rounded">Add New Product</a>
+</div>
+
+<div class="bg-white rounded shadow">
+    <table class="w-full text-sm">
+        <tr class="border-b">
+            <th class="p-2 text-left">ID</th>
+            <th class="p-2 text-left">Name</th>
+            <th class="p-2">Category</th>
+            <th class="p-2">Brand</th>
+            <th class="p-2">Size</th>
+            <th class="p-2">Colour</th>
+            <th class="p-2">Price</th>
+            <th class="p-2">Active</th>
+            <th class="p-2"></th>
+        </tr>
+        {% for p in products %}
+            <tr class="border-b">
+                <td class="p-2">{{ p.id }}</td>
+                <td class="p-2">{{ p.name }}</td>
+                <td class="p-2">{{ p.category.name }}</td>
+                <td class="p-2 text-center">{{ p.brand }}</td>
+                <td class="p-2 text-center">{{ p.size }}</td>
+                <td class="p-2 text-center">{{ p.color }}</td>
+                <td class="p-2 text-center">₹{{ "%.2f"|format(p.price) }}</td>
+                <td class="p-2 text-center">{{ "Yes" if p.is_active else "No" }}</td>
+                <td class="p-2 text-right">
+                    <a href="{{ url_for('admin_product_edit', product_id=p.id) }}" class="text-blue-600 mr-2">Edit</a>
+                    <form action="{{ url_for('admin_product_delete', product_id=p.id) }}" method="post" style="display:inline;">
+                        <button class="text-red-600 text-sm" onclick="return confirm('Delete this product?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        {% if products|length == 0 %}
+            <tr><td colspan="9" class="p-2 text-center text-gray-500">No products yet.</td></tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

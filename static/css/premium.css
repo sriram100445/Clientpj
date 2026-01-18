@@ -1,0 +1,251 @@
+/* ===============================
+   GLAMOZZ – PREMIUM UI SYSTEM
+   =============================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&family=Quicksand:wght@600;700&display=swap');
+
+:root {
+  --pink-main: #e11d74;
+  --pink-soft: #fff1f7;
+  --pink-light: #fde7f3;
+  --purple-dark: #3b0a45;
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --card-bg: #ffffff;
+  --radius-lg: 1.25rem;
+  --radius-md: 0.75rem;
+  --shadow-soft: 0 10px 25px rgba(0,0,0,0.06);
+  --shadow-hover: 0 18px 40px rgba(225,29,116,0.18);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(180deg, #fff7fb 0%, #ffffff 100%);
+  color: var(--text-dark);
+}
+
+/* ===============================
+   BRAND
+   =============================== */
+.logo-text {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--pink-main);
+}
+
+.logo-tagline {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #f472b6;
+}
+
+/* ===============================
+   NAVBAR
+   =============================== */
+.nav-link {
+  font-size: 0.85rem;
+  position: relative;
+}
+.round-pill { border-radius: 50px; }
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(to right, var(--pink-main), #9333ea);
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ===============================
+   BUTTONS
+   =============================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink-main), #9333ea);
+  color: white;
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-outline {
+  border: 1px solid #f9a8d4;
+  background: var(--pink-soft);
+  color: var(--pink-main);
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.8rem;
+}
+
+/* ===============================
+   CARDS
+   =============================== */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card-badge {
+  background: linear-gradient(135deg, var(--pink-main), #9333ea);
+  color: white;
+  font-size: 0.6rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+/* ===============================
+   PRODUCT
+   =============================== */
+.product-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.product-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.price {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* ===============================
+   FILTERS
+   =============================== */
+.filter-box {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem;
+}
+
+select, input, textarea {
+  border-radius: 0.6rem;
+  border: 1px solid #fbcfe8;
+  font-size: 0.8rem;
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+.footer {
+  background: white;
+  border-top: 1px solid #fbcfe8;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+/* ---------------- THEME ---------------- */
+:root{
+  --pink:#e32f86;
+  --pink-soft:#ffe4f2;
+  --bg:#fff8fb;
+  --text:#1f2937;
+  --card:#ffffff;
+}
+.dark{
+  --bg:#0f0f14;
+  --text:#f3f4f6;
+  --card:#1c1c24;
+}
+
+/* ---------------- GLOBAL ---------------- */
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Poppins,sans-serif;
+}
+
+/* ---------------- PRODUCT CARD ---------------- */
+.product-card{
+  background:var(--card);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.3s;
+}
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.12);
+}
+.product-img{
+  height:320px;
+  object-fit:cover;
+}
+.badge-offer{
+  background:var(--pink);
+  color:white;
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:999px;
+}
+
+/* ---------------- WISHLIST ---------------- */
+.wishlist-btn{
+  position:absolute;
+  top:12px;
+  right:12px;
+  font-size:20px;
+  cursor:pointer;
+}
+.wishlist-btn.active{
+  color:var(--pink);
+}
+
+/* ---------------- MODAL ---------------- */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+}
+.modal.show{display:flex;}
+.modal-box{
+  background:var(--card);
+  width:90%;
+  max-width:500px;
+  border-radius:16px;
+  padding:20px;
+}
+
+/* ---------------- OFFER POPUP ---------------- */
+.offer-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  z-index:200;
+}
+.offer-box{
+  background:white;
+  max-width:400px;
+  margin:10% auto;
+  padding:24px;
+  border-radius:20px;
+  text-align:center;
+}

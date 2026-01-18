@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/premium.css') }}">
+    <meta charset="UTF-8">
+    <title>Glamozz | Online Burkha & Hijab Store</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='glamicon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='glamicon.png') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{{ url_for('static',filename='js/premium.js') }}"></script>
+
+
+    <!-- Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Premium-style fonts (free from Google Fonts) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+/* LIGHT THEME  glamicon.png */
+:root{
+    --brand-bg:#fff8fb;
+    --brand-text:#1f2937;
+    --brand-card:#ffffff;
+    --brand-border:#e5e7eb;
+
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+}
+
+/* DARK THEME */
+.dark{
+    --brand-bg:#0f0f14;
+    --brand-text:#f3f4f6;
+    --brand-card:#1c1c24;
+    --brand-border:#2a2a35;
+}
+
+/* COMMON */
+body{
+    background:var(--brand-bg);
+    color:var(--brand-text);
+}
+
+.bg-card{
+    background:var(--brand-card);
+}
+
+.border-theme{
+    border-color:var(--brand-border);
+}
+</style>
+
+    </style>
+</head>
+
+<div id="offerPopup" class="offer-popup">
+  <div class="offer-box">
+    <h2 class="text-xl font-bold mb-2">🎉 Flat 10% OFF</h2>
+    <p>Use code <b>GLAM10</b></p>
+    <button onclick="this.parentElement.parentElement.style.display='none'"
+            class="mt-4 bg-pink-600 text-white px-4 py-2 rounded">
+      Shop Now
+    </button>
+  </div>
+</div>
+
+
+<body class="bg-[var(--brand-bg)] text-gray-800 transition-colors duration-300">
+
+    <!-- Top offer strip -->
+    <div class="w-full bg-gradient-to-r from-pink-600 via-rose-500 to-purple-700 text-white text-xs sm:text-sm">
+        <div class="max-w-6xl mx-auto px-4 py-1.5 flex justify-between items-center">
+            <span>✨ 10% OFF Grab It Quickly !! ✨ <b>OFFERS APPLIED</b></span>
+            <span class="hidden sm:inline">Premium burkhas • Same-day dispatch • COD available*</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+
+        <!-- LOGO (HOME PAGE LINK) -->
+        <div class="flex items-center gap-2">
+    <a href="{{ url_for('index') }}" class="flex items-center gap-2">
+        <img src="{{ url_for('static', filename='uploads/icon.png') }}" alt="Logo"
+             class="w-9 h-9 object-contain">
+
+        <div class="leading-tight">
+            <h1 class="text-2xl font-bold" style="color:#e32f86;font-family:Poppins;">
+                Glamozz
+            </h1>
+            <p class="tracking-widest text-xs font-medium" style="color:#ff7ec2;">
+                BEAUTY BECOMES BEAUTIFUL
+            </p>
+        </div>
+    </a>
+</div>
+
+
+        <!-- NAV LINKS -->
+
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            {% for slug, name in nav_categories.items() %}
+                <a href="{{ url_for('category_page', slug=slug) }}"
+                   class="nav-link hover:text-pink-600">
+                    {{ name }}
+                </a>
+            {% endfor %}
+
+            <a href="{{ url_for('cart') }}"
+   class="pill-badge bg-pink-50 text-pink-700 px-4 py-1.5 text-sm 
+          hover:bg-pink-100 flex items-center space-x-2 rounded-full">
+    <span>Cart</span>
+
+    <span class="pill-badge bg-pink-600 text-white text-xs 
+                 px-2 py-0.5 rounded-full">
+        {{ cart_count }}
+    </span>
+</a>
+
+
+            {% if current_user.is_authenticated and current_user.is_admin %}
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="text-xs text-gray-500 underline">
+                   Admin
+                </a>
+                <a href="{{ url_for('admin_logout') }}"
+                   class="text-xs text-gray-500 underline">
+                   Logout
+                </a>
+            {% endif %}
+        </nav>
+
+    </div>
+</header>
+
+            <!-- Mobile Cart -->
+<!-- FLOATING CART (MOBILE) -->
+<a href="{{ url_for('cart') }}"
+   class="md:hidden fixed bottom-5 right-5 z-40
+          bg-pink-600 text-white
+          flex items-center gap-2
+          px-5 py-3
+          rounded-full
+          shadow-xl
+          text-base font-semibold">
+
+    🛒 Cart
+    <span class="bg-white text-pink-600
+                 text-sm font-bold
+                 px-2.5 py-0.5
+                 rounded-full">
+        {{ cart_count }}
+    </span>
+</a>
+
+
+
+    <!-- Page content -->
+    <main class="flex-1">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="mb-4 space-y-2">
+                        {% for msg in messages %}
+                            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-2 rounded-lg text-sm">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+
+
+    <!-- Footer -->
+    <!-- FOOTER -->
+<!-- FOOTER -->
+<footer class="relative bg-white border-t mt-16 overflow-hidden">
+
+    <!-- DECORATIVE BACKGROUND -->
+    <div class="absolute inset-0 pointer-events-none">
+        <!-- Trees -->
+        <div class="tree tree-left"></div>
+        <div class="tree tree-right"></div>
+
+        <!-- Flying Birds -->
+        <svg class="bird bird-1" viewBox="0 0 24 24">
+            <path d="M2 12 Q6 8 12 12 Q18 8 22 12"
+                  fill="none"
+                  stroke="#e32f86"
+                  stroke-width="1.5"
+                  stroke-linecap="round"/>
+        </svg>
+
+        <svg class="bird bird-2" viewBox="0 0 24 24">
+            <path d="M2 12 Q6 9 12 12 Q18 9 22 12"
+                  fill="none"
+                  stroke="#e32f86"
+                  stroke-width="1.2"
+                  stroke-linecap="round"/>
+        </svg>
+
+        <svg class="bird bird-3" viewBox="0 0 24 24">
+            <path d="M2 12 Q6 10 12 12 Q18 10 22 12"
+                  fill="none"
+                  stroke="#e32f86"
+                  stroke-width="1"
+                  stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- MAIN FOOTER CONTENT -->
+    <div class="relative max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
+
+        <!-- BRAND -->
+         <!-- BRAND -->
+<div class="flex items-start gap-3">
+    <img src="{{ url_for('static', filename='uploads/icon.png') }}"
+         class="h-12 w-auto object-contain" alt="Glamozz">
+
+    <div>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">Glamozz Boutique</h3>
+        <p class="text-gray-500 mb-3 text-sm">
+            Premium abayas & modest fashion for everyday elegance.
+        </p>
+
+        <a href="https://www.instagram.com/glamozz_abaya?igsh=Y205bXdqdnI1Y3p0"
+           target="_blank"
+           class="inline-flex items-center gap-2 text-[var(--brand-pink)] font-medium hover:underline">
+            📸 Follow us on Instagram @glamozz_abaya
+        </a>
+    </div>
+</div>
+
+        
+
+        <!-- CONTACT -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Contact Us
+            </h3>
+
+            <p class="mb-2">
+                📞 <a href="tel:+918056853535" class="hover:underline">
+                    +91 80568 53535
+                    
+                </a>
+                <a href="tel:+919442170492" class="hover:underline">
+                    , +91 94421 70492
+                </a>
+            </p>
+
+            <p class="mb-2">
+                📍 C73, Thillai Nagar, 10 th Cross West,<br>
+                Trichy – 620018
+            </p>
+
+            <a href="https://www.google.com/maps/place/GLAMOZZ+BURKHA/@10.8209313,78.6791688,869m/data=!3m1!1e3!4m14!1m7!3m6!1s0x3baaf5a1981f28d3:0x8d49c6cb777a2616!2sGLAMOZZ+BURKHA!8m2!3d10.8209313!4d78.6817437!16s%2Fg%2F11f4m4zh_q!3m5!1s0x3baaf5a1981f28d3:0x8d49c6cb777a2616!8m2!3d10.8209313!4d78.6817437!16s%2Fg%2F11f4m4zh_q?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D"
+               target="_blank"
+               class="text-[var(--brand-pink)] hover:underline">
+                View on Google Maps
+            </a>
+        </div>
+
+        <!-- BUSINESS HOURS -->
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">
+                Business Timings
+            </h3>
+
+            <p>🕒 Mon – Sat: 10:00 AM – 9:00 PM</p>
+            <p>🕒 Sunday: 11:00 AM – 7:00 PM</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="border-t">
+        <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+            <span>© 2025 Glamozz. All Rights Reserved.</span>
+            <span>Made with ♥ for modest fashion.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP (MOBILE) -->
+<a href="https://wa.me/919876543210"
+   target="_blank"
+   class="fixed bottom-20 right-5 z-50
+          bg-green-500 hover:bg-green-600
+          text-white
+          w-14 h-14
+          rounded-full
+          flex items-center justify-center
+          shadow-lg
+          text-2xl"
+          >
+    💬
+</a>
+
+
+<!-- BRAND + ANIMATION STYLES -->
+<style>
+:root{
+    --brand-pink:#e32f86;
+    --brand-pink-soft:#ffe4f2;
+    --brand-deep:#4b1248;
+    --brand-bg:#fff8fb;
+}
+
+/* Trees */
+.tree{
+    position:absolute;
+    bottom:0;
+    width:40px;
+    height:80px;
+    background:linear-gradient(to top,#e32f86,#ffe4f2);
+    border-radius:20px 20px 0 0;
+    opacity:0.15;
+}
+.tree-left{ left:40px; }
+.tree-right{ right:40px; }
+
+/* Birds */
+.bird{
+    position:absolute;
+    width:24px;
+    height:24px;
+    opacity:0.6;
+}
+
+.bird-1{
+    top:20px;
+    left:-30px;
+    animation: fly 18s linear infinite;
+}
+.bird-2{
+    top:50px;
+    left:-30px;
+    animation: fly 22s linear infinite;
+}
+.bird-3{
+    top:80px;
+    left:-30px;
+    animation: fly 26s linear infinite;
+}
+
+@keyframes fly{
+    from{ transform:translateX(-50px); }
+    to{ transform:translateX(110vw); }
+}
+</style>
+</body>
+</html>
+
+
