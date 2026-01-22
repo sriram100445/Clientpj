@@ -659,9 +659,10 @@ Amount: ₹{order.total_amount}"""
 
 
 # ----------------- MAIN -----------------
-
-
 if __name__ == "__main__":
     with app.app_context():
         create_tables_and_seed()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
+
+
+
